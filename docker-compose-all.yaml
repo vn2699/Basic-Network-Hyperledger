@@ -131,7 +131,7 @@ services:
             file: ./docker-compose-base.yaml
             service: orderer.acme.com
         environment: 
-            - ORDERER_HOST=orderer0.example.com
+            - ORDERER_HOST=orderer0.acme.com
             - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
             - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
             - ORDERER_KAFKA_RETRY_LONGINTERVAL=30s
