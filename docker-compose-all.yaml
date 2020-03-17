@@ -146,6 +146,7 @@ services:
             - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer0.acme.com/tls:/var/hyperledger/tls
             - ./crypto-config/peerOrganizations/acme.com/:/var/hyperledger/acme
             - ./crypto-config/peerOrganizations/budget.com/:/var/hyperledger/budget
+            - ./crypto-config/peerOrganizations/expo.com/:/var/hyperledger/expo
             - data.orderer0.acme.com:/var/ledger
         ports:
             - 7050:7050
@@ -171,6 +172,7 @@ services:
             - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer1.acme.com/tls:/var/hyperledger/tls
             - ./crypto-config/peerOrganizations/acme.com/:/var/hyperledger/acme
             - ./crypto-config/peerOrganizations/budget.com/:/var/hyperledger/budget
+            - ./crypto-config/peerOrganizations/expo.com/:/var/hyperledger/expo
             - data.orderer1.acme.com:/var/ledger
         ports:
             - 8050:8050
@@ -196,6 +198,7 @@ services:
             - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer2.acme.com/tls:/var/hyperledger/tls
             - ./crypto-config/peerOrganizations/acme.com/:/var/hyperledger/acme
             - ./crypto-config/peerOrganizations/budget.com/:/var/hyperledger/budget
+            - ./crypto-config/peerOrganizations/expo.com/:/var/hyperledger/expo
             - data.orderer2.acme.com:/var/ledger
         ports:
             - 9050:9050
