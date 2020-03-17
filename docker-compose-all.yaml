@@ -140,8 +140,8 @@ services:
             - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
         volumes:
             - ./network-config/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-            - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer.acme.com/msp:/var/hyperledger/msp
-            - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer.acme.com/tls:/var/hyperledger/tls
+            - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer0.acme.com/msp:/var/hyperledger/msp
+            - ./crypto-config/ordererOrganizations/acme.com/orderers/orderer0.acme.com/tls:/var/hyperledger/tls
             - ./crypto-config/peerOrganizations/acme.com/:/var/hyperledger/acme
             - ./crypto-config/peerOrganizations/budget.com/:/var/hyperledger/budget
             - data.orderer0.acme.com:/var/ledger
