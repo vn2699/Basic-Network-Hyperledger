@@ -392,7 +392,7 @@ services:
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         environment: 
             - GOPATH=/opt/gopath
-            - ORDERER_ADDRESS=orderer.acme.com:7050
+            - ORDERER_ADDRESS=orderer0.acme.com:7050
             - CORE_PEER_ID=cli
             - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
             - CORE_PEER_ADDRESS=peer0.acme.com:7051
