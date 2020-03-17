@@ -70,7 +70,7 @@
                 # AnchorPeers defines the location of peers which can be used
                 # for cross org gossip communication.  Note, this value is only
                 # encoded in the genesis block in the Application section context
-                - Host: peer0.Acme.example.com
+                - Host: peer0.acme.example.com
                   Port: 7051
     
         - &Budget
@@ -101,7 +101,39 @@
                 # AnchorPeers defines the location of peers which can be used
                 # for cross org gossip communication.  Note, this value is only
                 # encoded in the genesis block in the Application section context
-                - Host: peer0.Budget.example.com
+                - Host: peer0.budget.example.com
+                  Port: 8051
+        
+        - &Expo
+            # DefaultOrg defines the organization which is used in the sampleconfig
+            # of the fabric.git development environment
+            Name: ExpoMSP
+
+            # ID to load the MSP definition as
+            ID: ExpoMSP
+
+            MSPDir: /home/varun/Documents/projects/Hyperledger/hyp-ex2/crypto-config/peerOrganizations/expo.com/msp
+
+            # Policies defines the set of policies at this level of the config tree
+            # For organization policies, their canonical path is usually
+            #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('ExpoMSP.admin', 'ExpoMSP.peer', 'ExpoMSP.client')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('ExpoMSP.admin', 'ExpoMSP.client')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('ExpoMSP.admin')"
+
+            # leave this flag set to true.
+            AnchorPeers:
+                # AnchorPeers defines the location of peers which can be used
+                # for cross org gossip communication.  Note, this value is only
+                # encoded in the genesis block in the Application section context
+                - Host: peer0.expo.example.com
                   Port: 9051
     
     ################################################################################
@@ -358,6 +390,7 @@
                     Organizations:
                         - *Acme
                         - *Budget
+                        - *Expo
         AirlineChannel:
             Consortium: SampleConsortium
             <<: *ChannelDefaults
@@ -366,6 +399,7 @@
                 Organizations:
                     - *Acme
                     - *Budget
+                    - *Expo
                 Capabilities:
                     <<: *ApplicationCapabilities
     

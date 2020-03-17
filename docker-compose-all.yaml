@@ -19,8 +19,10 @@ volumes:
     data.orderer2.acme.com:
     couchdb.peer0.acme.com:
     couchdb.peer0.budget.com:
+    couchdb.peer0.expo.com:
     data.peer0.acme.com:
     data.peer0.budget.com:
+    data.peer0.expo.com:
 
 services:
 
@@ -224,7 +226,7 @@ services:
             - CORE_PEER_ID=peer0.acme.com
             - CORE_PEER_NETWORKID=dev
             - CORE_PEER_ADDRESS=peer0.acme.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.acme.com:8051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.acme.com:7051
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.acme.com:7051
             - CORE_PEER_LOCALMSPID=AcmeMSP
             - CORE_PEER_AUTODETECT=true
@@ -287,7 +289,7 @@ services:
             - CORE_PEER_AUTODETECT=true
             - CORE_PEER_TLS_ENABLED=false
             - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.budget.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.budget.com:8051
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.budget.com:8051
             # - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
             # - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
@@ -318,11 +320,71 @@ services:
         networks: 
             - airline
 
+    couchdb.peer0.expo.com:
+        container_name: couchdb.peer0.expo.com
+        extends: 
+            file: ./docker-compose-couchdb.yaml
+            service: couchdb.peer0.expo.com
+        environment: 
+            - COUCHDB_USER=anil
+            - COUCHDB_PASSWORD=pw
+        ports:
+            - 9984:5984
+        networks: 
+            - airline
+
+    peer0.expo.com:
+        container_name: peer0.expo.com
+        extends: 
+            file: ./docker-compose-base.yaml
+            service: peer.base
+        environment: 
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+            - CORE_PEER_ID=peer0.expo.com
+            - CORE_PEER_NETWORKID=dev
+            - CORE_PEER_ADDRESS=peer0.expo.com:9051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.expo.com:9051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.expo.com:9051
+            - CORE_PEER_LOCALMSPID=ExpoMSP
+            - CORE_PEER_AUTODETECT=true
+            - CORE_PEER_TLS_ENABLED=false
+            - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
+            # - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
+            # - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
+            # - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
+            # - CORE_PEER_TLS_CLIENTROOTCAS=
+            # - CORE_PEER_TLS_CLIENTKEY_FILE=
+            # - CORE_PEER_TLS_CLIENTCERT_FILE=
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.expo.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_REQUESTTIMEOUT=1000s
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=anil
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pw
+            - CORE_PEER_FILESYSYTEMPATH=/var/hyperledger/production
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+        volumes: 
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/expo.com/peers/peer0.expo.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/expo.com/peers/peer0.expo.com/tls:/etc/hyperledger/fabric/tls
+        - data.peer0.expo.com:/var/hyperledger/production
+        ports:
+            - 9051:9051
+            - 9052:9052
+        depends_on: 
+            - orderer0.acme.com
+            - orderer1.acme.com
+            - orderer2.acme.com
+            - couchdb.peer0.expo.com
+        networks: 
+            - airline
+
     cli:
         container_name: cli
         image: hyperledger/fabric-tools:$IMAGE_TAG
         tty: true
         stdin_open: true
+        dns_search: .
         command: /bin/bash
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         environment: 

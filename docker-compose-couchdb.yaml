@@ -13,3 +13,9 @@ services:
         command: couchdb
         ports:
             - 7984:5984
+    
+    couchdb.peer0.expo.com:
+        image: hyperledger/fabric-couchdb
+        command: couchdb
+        ports:
+            - 9984:5984
